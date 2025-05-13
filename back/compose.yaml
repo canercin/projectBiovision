@@ -1,0 +1,10 @@
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=biovision'
+      - 'MYSQL_PASSWORD=biospring'
+      - 'MYSQL_ROOT_PASSWORD=tooroot'
+      - 'MYSQL_USER=biospring'
+    ports:
+      - '3306:3306'

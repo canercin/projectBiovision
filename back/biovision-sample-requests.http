@@ -1,0 +1,74 @@
+###
+# LOGIN
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "doctor_deneme",
+  "password": "doctor_deneme"
+}
+
+###
+# REGISTER
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": ""
+}
+
+###
+# ADD DOCTOR
+POST http://localhost:8080/api/doctor
+Content-Type: application/json
+
+{
+  "username": "firstDoctor",
+  "password": "firstDoctor",
+  "firstName": "firstDoctor",
+  "lastName": "firstDoctor"
+}
+
+###
+# ADD PATIENT
+POST http://localhost:8080/api/patient
+Content-Type: application/json
+
+{
+  "username": "firstPatient",
+  "password": "firstPatient",
+  "firstName": "firstPatient",
+  "lastName": "firstPatient"
+}
+
+###
+# ADD DIAGNOSIS
+POST http://localhost:8080/api/diagnosis
+Content-Type: application/json
+
+{
+  "name": "diagnosis_deneme"
+}
+
+###
+# ADD EXAMINATION
+POST http://localhost:8080/api/examination
+Content-Type: application/json
+
+{
+  "date": {},
+  "patient": {}
+}
+
+###
+# ADD RESULT
+POST http://localhost:8080/api/result
+Content-Type: application/json
+
+{
+  "date": {},
+  "hasCancer": false,
+  "originalImagePath": "",
+  "resultImagePath": ""
+}
