@@ -22,6 +22,11 @@ public class DiagnosisController {
         return diagnosisService.save(diagnosisRequest);
     }
 
+    @PutMapping
+    public DiagnosisDTO update(@RequestBody DiagnosisDTO diagnosisDTO) {
+        return diagnosisService.update(diagnosisDTO.getId(), diagnosisDTO);
+    }
+
     @GetMapping
     public List<DiagnosisDTO> findAll() {
         return diagnosisService.findAll();
