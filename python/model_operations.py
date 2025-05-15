@@ -18,7 +18,7 @@ def choose_and_load_model(model_type):
             print("Skin Cancer U-Net model selected")
             model = load_model("models/unet_model.keras")
             return model
-        case "1":
+        case 1:
             print("Skin Cancer CNN model selected")
             model = load_model("models/skin_model.h5")
             return model
@@ -44,7 +44,8 @@ def preprocess_image_for_cnn(image_path: str):
     :param image_path: path to the image file.
     :return: preprocessed image.
     """
-    img_resized = image.load_img(image_path, target_size=(180, 180))
+    full_image_path = os.path.join(f"/home/{os.getenv('USER')}/biovision/original/", image_path)
+    img_resized = image.load_img(full_image_path, target_size=(180, 180))
     img_array = image.img_to_array(img_resized)
     img_array_expanded = np.expand_dims(img_array, axis=0)
     final_image = img_array_expanded / 255.0
@@ -67,7 +68,7 @@ def predict_image_for_cnn(model_type, image_path):
     else:
         unet_image = predict_image_for_unet(image_path)
         name = rename_original_to_masked(image_path)
-        output_dir = f"/home/{os.getenv('USER')}/masked_images/"
+        output_dir = f"/home/{os.getenv('USER')}/biovision/masked_images/"
         os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(output_dir, os.path.basename(name))
         cv2.imwrite(output_path, unet_image * 255, [cv2.IMWRITE_JPEG_QUALITY, 95])
