@@ -1,5 +1,6 @@
 package com.biovision.back.rest;
 
+import com.biovision.back.dto.DoctorDTO;
 import com.biovision.back.dto.request.DoctorRequest;
 import com.biovision.back.entity.Doctor;
 import com.biovision.back.service.DoctorService;
@@ -21,6 +22,11 @@ public class DoctorController {
     @PostMapping
     public Doctor createDoctor(@RequestBody DoctorRequest doctorRequest) {
         return doctorService.save(doctorRequest);
+    }
+
+    @PutMapping
+    public Doctor updateDoctor(@RequestBody DoctorDTO doctorDTO) {
+        return doctorService.update(doctorDTO);
     }
 
     @GetMapping
