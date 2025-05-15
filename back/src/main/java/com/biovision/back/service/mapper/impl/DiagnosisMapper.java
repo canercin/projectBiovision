@@ -23,10 +23,4 @@ public interface DiagnosisMapper extends EntityMapper<Diagnosis, DiagnosisDTO> {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "type", target = "type")
     Diagnosis toEntity(DiagnosisDTO dto);
-
-    @Named("toEntityForPatientList")
-    List<PatientDTO> toDTOListForPatient(List<Patient> doctors);
-
-    @Named("toDTOForPatientList")
-    List<Patient> toEntityForPatientList(List<PatientDTO> doctors);
 }

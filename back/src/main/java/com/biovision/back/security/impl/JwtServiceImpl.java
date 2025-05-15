@@ -1,5 +1,6 @@
 package com.biovision.back.security.impl;
 
+import com.biovision.back.entity.JwtUserDetails;
 import com.biovision.back.security.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,6 +22,7 @@ public class JwtServiceImpl implements JwtService {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .claim("role", ((JwtUserDetails) userDetails).getRole())
                 .signWith(this.getSignKey())
                 .compact();
     }

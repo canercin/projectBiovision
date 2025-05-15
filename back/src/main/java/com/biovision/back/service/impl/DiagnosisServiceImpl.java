@@ -2,9 +2,11 @@ package com.biovision.back.service.impl;
 
 import com.biovision.back.dto.DiagnosisDTO;
 import com.biovision.back.dto.request.DiagnosisRequest;
+import com.biovision.back.entity.Diagnosis;
 import com.biovision.back.repository.DiagnosisRepository;
 import com.biovision.back.service.DiagnosisService;
 import com.biovision.back.service.mapper.impl.DiagnosisMapper;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,8 +53,15 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 
     @Override
     public DiagnosisDTO update(UUID id, DiagnosisDTO diagnosisDTO) {
-        // todo will be implemented in the future
-        return null;
+        Optional<Diagnosis> optionalExistingDiagnosis = diagnosisRepository.findById(id);
+
+        if (optionalExistingDiagnosis.isPresent()) {
+            Diagnosis existingDiagnosis = optionalExistingDiagnosis.get();
+            existingDiagnosis.setName(diagnosisDTO.getName());
+            return diagnosisMapper.toDTO(diagnosisRepository.save(existingDiagnosis));
+        }
+
+        throw new EntityNotFoundException("Entity not found");
     }
 
     @Override

@@ -11,7 +11,5 @@ import java.util.UUID;
 public class DiagnosisDTO {
     private UUID id;
     private String name;
-    private ExaminationDTO examination;
     private Integer type;
-    List<PatientDTO> patients;
 }
