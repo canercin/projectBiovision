@@ -31,6 +31,8 @@ public class AuthServiceImpl implements AuthService {
         JwtUserDetails user = new JwtUserDetails();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setFirstName(registerRequest.getFirstName());
+        user.setLastName(registerRequest.getLastName());
         user.setRole("ROLE_USER");
         return jwtUserRepository.save(user);
     }
