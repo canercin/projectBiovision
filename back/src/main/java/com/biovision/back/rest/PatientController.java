@@ -42,8 +42,8 @@ public class PatientController {
         return patientService.findById(id);
     }
 
-    @GetMapping("/{doctorId}")
-    List<Patient> getPatientsByDoctor(@PathVariable("doctorId") UUID doctorId) {
-        return patientService.getPatientsByDoctor(doctorId);
+    @GetMapping("/getPatientsByDoctor")
+    List<Patient> getPatientsByDoctor() {
+        return patientService.getPatientsByDoctor();
     }
 }

@@ -61,7 +61,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> getPatientsByDoctor(UUID doctorId) {
+    public List<Patient> getPatientsByDoctor() {
         UUID currentUserId = SecurityUtils.getCurrentUser().getId();
         return patientRepository.getPatientsByDoctor(currentUserId);
     }

@@ -12,6 +12,6 @@ import java.util.UUID;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
-    @Query("select p from Patient p join p.doctors d where d.id = :doctorId")
+    @Query("select p from Patient p join p.doctors d join p.examinations e where d.id = :doctorId and e.doctor.id = :doctorId")
     List<Patient> getPatientsByDoctor(@Param("doctorId") UUID doctorId);
 }

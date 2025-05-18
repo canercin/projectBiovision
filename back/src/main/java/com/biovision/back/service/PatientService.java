@@ -12,5 +12,5 @@ public interface PatientService {
     Patient save(PatientRequest patientRequest);
     Patient update(UUID id, Patient patient);
     void deleteById(UUID id);
-    List<Patient> getPatientsByDoctor(UUID doctorId);
+    List<Patient> getPatientsByDoctor();
 }
