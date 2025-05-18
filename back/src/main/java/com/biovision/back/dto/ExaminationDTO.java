@@ -10,7 +10,6 @@ import java.util.UUID;
 @Builder public class ExaminationDTO {
     private UUID id;
     private Instant date;
-    private PatientDTO patient;
     private ResultDTO result;
     private DiagnosisDTO diagnosis;
 }

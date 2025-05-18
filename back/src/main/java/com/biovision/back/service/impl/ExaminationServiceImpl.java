@@ -77,6 +77,7 @@ public class ExaminationServiceImpl implements ExaminationService {
         Result result = createResultForExamination(examinationRequest.getOriginalImage(), diagnosis.getType());
         result.setExamination(examination);
         resultService.save(resultMapper.toDTO(result));
+        examination.setResult(result);
 
         return examinationMapper.toDTO(examination);
     }

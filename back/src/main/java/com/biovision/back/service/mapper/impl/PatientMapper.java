@@ -26,8 +26,6 @@ public interface PatientMapper extends EntityMapper<Patient, PatientDTO> {
     @Mapping(source = "role", target = "role")
     @Mapping(source = "firstName", target = "firstName")
     @Mapping(source = "lastName", target = "lastName")
-    @Mapping(source = "doctors", target = "doctors", qualifiedByName = "toDTOForDoctorList")
-    @Mapping(source = "diagnoses", target = "diagnoses", qualifiedByName = "toDtoForDiagnosesList")
     @Mapping(source = "examinations", target = "examinations", qualifiedByName = "toDtoForExaminationsList")
     PatientDTO toDTO(Patient entity);
 
@@ -38,8 +36,6 @@ public interface PatientMapper extends EntityMapper<Patient, PatientDTO> {
     @Mapping(source = "role", target = "role")
     @Mapping(source = "firstName", target = "firstName")
     @Mapping(source = "lastName", target = "lastName")
-    @Mapping(source = "doctors", target = "doctors", qualifiedByName = "toEntityForDoctorList")
-    @Mapping(source = "diagnoses", target = "diagnoses", qualifiedByName = "toEntityForDiagnosesList")
     @Mapping(source = "examinations", target = "examinations", qualifiedByName = "toEntityForExaminationsList")
     Patient toEntity(PatientDTO dto);
 

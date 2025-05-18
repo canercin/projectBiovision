@@ -14,5 +14,4 @@ public class ResultDTO {
     private Boolean hasCancer;
     private String originalImagePath;
     private String resultImagePath;
-    private ExaminationDTO examination;
 }

@@ -12,7 +12,5 @@ import java.util.UUID;
 @Data
 @SuperBuilder
 public class PatientDTO extends UserDTO{
-    List<DoctorDTO> doctors;
-    List<DiagnosisDTO> diagnoses;
     List<ExaminationDTO> examinations;
 }

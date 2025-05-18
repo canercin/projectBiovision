@@ -14,7 +14,6 @@ public interface ResultMapper extends EntityMapper<Result, ResultDTO> {
     @Mapping(source = "hasCancer", target = "hasCancer")
     @Mapping(source = "originalImagePath", target = "originalImagePath")
     @Mapping(source = "resultImagePath", target = "resultImagePath")
-    @Mapping(source = "examination", target = "examination")
     ResultDTO toDTO(Result entity);
 
     @Override
@@ -23,6 +22,5 @@ public interface ResultMapper extends EntityMapper<Result, ResultDTO> {
     @Mapping(source = "hasCancer", target = "hasCancer")
     @Mapping(source = "originalImagePath", target = "originalImagePath")
     @Mapping(source = "resultImagePath", target = "resultImagePath")
-    @Mapping(source = "examination", target = "examination")
     Result toEntity(ResultDTO dto);
 }

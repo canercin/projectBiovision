@@ -11,7 +11,6 @@ public interface ExaminationMapper extends EntityMapper<Examination, Examination
     @Override
     @Mapping(source = "id", target = "id")
     @Mapping(source = "date", target = "date")
-    @Mapping(source = "patient", target = "patient")
     @Mapping(source = "result", target = "result")
     @Mapping(source = "diagnosis", target = "diagnosis")
     ExaminationDTO toDTO(Examination entity);
@@ -19,7 +18,6 @@ public interface ExaminationMapper extends EntityMapper<Examination, Examination
     @Override
     @Mapping(source = "id", target = "id")
     @Mapping(source = "date", target = "date")
-    @Mapping(source = "patient", target = "patient")
     @Mapping(source = "result", target = "result")
     @Mapping(source = "diagnosis", target = "diagnosis")
     Examination toEntity(ExaminationDTO dto);

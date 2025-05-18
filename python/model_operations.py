@@ -18,7 +18,7 @@ def choose_and_load_model(model_type):
             print("Skin Cancer U-Net model selected")
             model = load_model("models/unet_model.keras")
             return model
-        case 1:
+        case "1":
             print("Skin Cancer CNN model selected")
             model = load_model("models/skin_model.h5")
             return model
