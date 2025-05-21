@@ -14,7 +14,7 @@ def choose_and_load_model(model_type):
     :return: selected model
     """
     match model_type:
-        case 0:
+        case "0":
             print("Skin Cancer U-Net model selected")
             model = load_model("models/unet_model.keras")
             return model
@@ -22,15 +22,15 @@ def choose_and_load_model(model_type):
             print("Skin Cancer CNN model selected")
             model = load_model("models/skin_model.h5")
             return model
-        case 2:
+        case "2":
             print("Breast Cancer CNN model selected")
-            model = load_model("models/breast_model.h5")
+            model = load_model("models/breast_model.h5", compile=False)
             return model
-        case 3:
+        case "3":
             print("Brain Cancer CNN model selected")
             model = load_model("models/brain_model.h5")
             return model
-        case 4:
+        case "4":
             print("Blood Cancer CNN model selected")
             model = load_model("models/blood_model.h5")
             return model
@@ -62,8 +62,9 @@ def predict_image_for_cnn(model_type, image_path):
     model = choose_and_load_model(model_type)
     preprocessed_image = preprocess_image_for_cnn(image_path)
     prediction = model.predict(preprocessed_image)
+    print(prediction)
     predicted_class_index = prediction[0][0] > 0.5
-    if model_type != 1:
+    if model_type != "1" or not predicted_class_index :
         return None, predicted_class_index
     else:
         unet_image = predict_image_for_unet(image_path)
@@ -94,7 +95,7 @@ def predict_image_for_unet(image_path):
     :param image_path: path to the image file.
     :return: predicted image.
     """
-    model = choose_and_load_model(0)
+    model = choose_and_load_model("0")
     preprocessed_image = preprocess_image_for_unet(image_path)
     prediction = model.predict(preprocessed_image)
     predicted_image = (prediction[0] > 0.5).astype(np.uint8)
@@ -120,4 +121,43 @@ def rename_original_to_masked(image_path: str):
     """
     new_name = image_path.replace("original", "masked")
     return new_name
+
+
+def generate_gcode_from_image(image_path, output_path, scale=1.0):
+    # Resmi yükle ve gri tonlamaya çevir
+    image_to_gcode = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    height, width = image_to_gcode.shape
+    _, binary_image = cv2.threshold(image_to_gcode, 127, 255, cv2.THRESH_BINARY)
+
+    # Konturları bul
+    contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # G-kod dosyasını oluştur ve başlangıç komutlarını yaz
+    with open(output_path, "w") as gcode_file:
+        gcode_file.write("G21 ; Set units to millimeters\n")
+        gcode_file.write("G90 ; Absolute positioning\n")
+        gcode_file.write("G28 ; Home all axes\n")
+        gcode_file.write("G1 Z5.0 F500 ; Lift pen\n")
+
+        for contour in contours:
+            # İlk kontur noktasına git ve kalemi indir
+            x, y = contour[0][0]
+            x *= scale
+            y = (height - y) * scale  # Y eksenini ters çeviriyoruz
+            gcode_file.write(f"G1 X{x:.2f} Y{y:.2f} F1500 ; Move to start of contour\n")
+            gcode_file.write("G1 Z0.0 F500 ; Lower pen\n")
+
+            # Kontur noktalarını takip ederek çizim yap
+            for point in contour:
+                x, y = point[0]
+                x *= scale
+                y = (height - y) * scale  # Y eksenini ters çeviriyoruz
+                gcode_file.write(f"G1 X{x:.2f} Y{y:.2f} F1500\n")
+
+            # Kontur bittiğinde kalemi kaldır
+            gcode_file.write("G1 Z5.0 F500 ; Lift pen\n")
+
+        # İşlem bitti, kalemi yukarıda tut ve bitir
+        gcode_file.write("G1 Z5.0 F500 ; Lift pen\n")
+        gcode_file.write("M84 ; Disable motors\n")
 

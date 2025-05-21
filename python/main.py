@@ -10,7 +10,7 @@ def choose_and_run_model():
     Expects JSON payload with 'model_type' and 'image_path'.
     """
     data = request.get_json()
-    model_type = data.get('model_type')
+    model_type = str(data.get('model_type'))
     image_path = data.get('image_path')
 
     if model_type is None or image_path is None:
