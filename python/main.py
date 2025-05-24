@@ -16,12 +16,22 @@ def choose_and_run_model():
     if model_type is None or image_path is None:
         return jsonify({'error': 'model_type and image_path are required'}), 400
 
-    unet_result, is_cancer = model_operations.predict_image_for_cnn(model_type, image_path)
+    result = model_operations.predict_image_for_cnn(model_type, image_path)
 
-    return jsonify({'unet_result': unet_result, 'is_cancer': bool(is_cancer)})
+    # predict_image_for_cnn artık üç değer döndürüyor
+    if isinstance(result, tuple) and len(result) == 3:
+        unet_result, is_cancer, gcode_path = result
+    else:
+        unet_result, is_cancer = result
+        gcode_path = None
+
+    return jsonify({
+        'unet_result': unet_result,
+        'is_cancer': bool(is_cancer),
+        'gcode_path': gcode_path
+    })
 
 
 if __name__ == '__main__':
     # Run the Flask app
     app.run(debug=True)
-

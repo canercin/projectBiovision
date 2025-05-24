@@ -1,5 +1,7 @@
 package com.biovision.back.service;
 
+import java.io.IOException;
+
 public interface GcodeService {
-    void runGcodeFile(String gcodeFilePath);
+    void processGCodeFile(String filePath) throws IOException;
 }

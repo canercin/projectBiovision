@@ -73,7 +73,14 @@ def predict_image_for_cnn(model_type, image_path):
         os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(output_dir, os.path.basename(name))
         cv2.imwrite(output_path, unet_image * 255, [cv2.IMWRITE_JPEG_QUALITY, 95])
-        return name, predicted_class_index
+
+        # G-code dosyasını oluştur
+        gcode_output_dir = f"/home/{os.getenv('USER')}/biovision/gcodes/"
+        os.makedirs(gcode_output_dir, exist_ok=True)
+        gcode_output_path = os.path.join(gcode_output_dir, os.path.splitext(os.path.basename(name))[0] + ".gcode")
+        generate_gcode_from_image(output_path, gcode_output_path)
+
+        return name, predicted_class_index, gcode_output_path
 
 
 def preprocess_image_for_unet(image_path: str):
@@ -160,4 +167,3 @@ def generate_gcode_from_image(image_path, output_path, scale=1.0):
         # İşlem bitti, kalemi yukarıda tut ve bitir
         gcode_file.write("G1 Z5.0 F500 ; Lift pen\n")
         gcode_file.write("M84 ; Disable motors\n")
-
