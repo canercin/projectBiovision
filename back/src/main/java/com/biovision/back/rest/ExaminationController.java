@@ -30,7 +30,12 @@ public class ExaminationController {
     }
 
     @GetMapping("/{id}")
-    public  ExaminationDTO getExamination(@PathVariable("id") UUID id) {
+    public ExaminationDTO getExamination(@PathVariable("id") UUID id) {
         return examinationService.findById(id);
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ExaminationDTO getExaminationByPatientId(@PathVariable("patientId") UUID patientId) {
+        return examinationService.findExaminationByPatientId(patientId);
     }
 }

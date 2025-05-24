@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface ExaminationRepository extends JpaRepository<Examination, UUID> {
+    Examination findExaminationByPatientId(UUID patientId);
 }

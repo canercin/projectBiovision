@@ -11,6 +11,7 @@ import com.biovision.back.service.mapper.impl.ExaminationMapper;
 import com.biovision.back.service.mapper.impl.ResultMapper;
 import com.biovision.back.service.restTemplate.PythonApiClientService;
 import com.biovision.back.service.restTemplate.dtos.response.PythonApiResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,6 +92,12 @@ public class ExaminationServiceImpl implements ExaminationService {
     @Override
     public void delete(UUID id) {
         examinationRepository.deleteById(id);
+    }
+
+    @Override
+    public ExaminationDTO findExaminationByPatientId(UUID patientId) {
+        Patient patient = (Patient) SecurityUtils.getCurrentUser();
+        return examinationMapper.toDTO(examinationRepository.findExaminationByPatientId(patient.getId()));
     }
 
     private Result createResultForExamination(MultipartFile image, int type) throws IOException {
