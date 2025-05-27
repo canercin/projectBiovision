@@ -25,6 +25,8 @@ def choose_and_run_model():
         unet_result, is_cancer = result
         gcode_path = None
 
+    print(is_cancer)
+
     return jsonify({
         'unet_result': unet_result,
         'is_cancer': bool(is_cancer),

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class PythonApiResponse {
-    private boolean isCancer;
-    private String resultImagePath;
+    private String unet_result;
+    private boolean is_cancer;
+    private String gcode_path;
 }

@@ -1,9 +1,6 @@
 package com.biovision.back.service.restTemplate;
 
-import com.biovision.back.service.restTemplate.dtos.request.PythonApiRequest;
 import com.biovision.back.service.restTemplate.dtos.response.PythonApiResponse;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

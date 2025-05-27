@@ -62,7 +62,6 @@ def predict_image_for_cnn(model_type, image_path):
     model = choose_and_load_model(model_type)
     preprocessed_image = preprocess_image_for_cnn(image_path)
     prediction = model.predict(preprocessed_image)
-    print(prediction)
     predicted_class_index = prediction[0][0] > 0.5
     if model_type != "1" or not predicted_class_index :
         return None, predicted_class_index
@@ -80,6 +79,8 @@ def predict_image_for_cnn(model_type, image_path):
         gcode_output_path = os.path.join(gcode_output_dir, os.path.splitext(os.path.basename(name))[0] + ".gcode")
         generate_gcode_from_image(output_path, gcode_output_path)
 
+        print(str(predicted_class_index) + " from ")
+
         return name, predicted_class_index, gcode_output_path
 
 
@@ -89,7 +90,8 @@ def preprocess_image_for_unet(image_path: str):
     :param image_path: path to the image file.
     :return: preprocessed image.
     """
-    img_resized = image.load_img(image_path, target_size=(180, 180))
+    full_image_path = os.path.join(f"/home/{os.getenv('USER')}/biovision/original/", image_path)
+    img_resized = image.load_img(full_image_path, target_size=(180, 180))
     img_array = image.img_to_array(img_resized)
     img_normalized = img_array / 255.0
     final_image = np.expand_dims(img_normalized, axis=0)

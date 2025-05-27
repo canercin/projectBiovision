@@ -1,9 +1,11 @@
 package com.biovision.back.service.impl;
 
 import com.biovision.back.dto.ExaminationDTO;
+import com.biovision.back.dto.ResultDTO;
 import com.biovision.back.dto.request.ExaminationRequest;
 import com.biovision.back.entity.*;
 import com.biovision.back.repository.ExaminationRepository;
+import com.biovision.back.repository.ResultRepository;
 import com.biovision.back.security.SecurityUtils;
 import com.biovision.back.service.*;
 import com.biovision.back.service.mapper.impl.DiagnosisMapper;
@@ -30,8 +32,9 @@ public class ExaminationServiceImpl implements ExaminationService {
     private final DoctorService doctorService;
     private final PythonApiClientService pythonApiClientService;
     private final ResultMapper resultMapper;
+    private final ResultRepository resultRepository;
 
-    public ExaminationServiceImpl(ExaminationRepository examinationRepository, ExaminationMapper examinationMapper, ResultService resultService, PatientService patientService, DiagnosisService diagnosisService, DiagnosisMapper diagnosisMapper, DoctorService doctorService, PythonApiClientService pythonApiClientService, ResultMapper resultMapper) {
+    public ExaminationServiceImpl(ExaminationRepository examinationRepository, ExaminationMapper examinationMapper, ResultService resultService, PatientService patientService, DiagnosisService diagnosisService, DiagnosisMapper diagnosisMapper, DoctorService doctorService, PythonApiClientService pythonApiClientService, ResultMapper resultMapper, ResultRepository resultRepository) {
         this.examinationRepository = examinationRepository;
         this.examinationMapper = examinationMapper;
         this.resultService = resultService;
@@ -41,6 +44,7 @@ public class ExaminationServiceImpl implements ExaminationService {
         this.doctorService = doctorService;
         this.pythonApiClientService = pythonApiClientService;
         this.resultMapper = resultMapper;
+        this.resultRepository = resultRepository;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class ExaminationServiceImpl implements ExaminationService {
         examination = examinationRepository.save(examination);
         Result result = createResultForExamination(examinationRequest.getOriginalImage(), diagnosis.getType());
         result.setExamination(examination);
-        resultService.save(resultMapper.toDTO(result));
+        resultRepository.save(result);
         examination.setResult(result);
 
         return examinationMapper.toDTO(examination);
@@ -106,8 +110,9 @@ public class ExaminationServiceImpl implements ExaminationService {
         result.setOriginalImagePath(path);
         // todo set result image path and hasCancer - create py flask client
         PythonApiResponse response = pythonApiClientService.getPythonApiResponse(path, type);
-        result.setResultImagePath(response.getResultImagePath());
-        result.setHasCancer(response.isCancer());
+        result.setResultImagePath(response.getUnet_result());
+        result.setHasCancer(response.is_cancer());
+        result = resultRepository.save(result);
         return result;
     }
 
