@@ -145,7 +145,6 @@ def generate_gcode_from_image(image_path, output_path, scale=1.0):
     with open(output_path, "w") as gcode_file:
         gcode_file.write("G21 ; Set units to millimeters\n")
         gcode_file.write("G90 ; Absolute positioning\n")
-        gcode_file.write("G28 ; Home all axes\n")
         gcode_file.write("G1 Z5.0 F500 ; Lift pen\n")
 
         for contour in contours:
@@ -168,4 +167,4 @@ def generate_gcode_from_image(image_path, output_path, scale=1.0):
 
         # İşlem bitti, kalemi yukarıda tut ve bitir
         gcode_file.write("G1 Z5.0 F500 ; Lift pen\n")
-        gcode_file.write("M84 ; Disable motors\n")
+        gcode_file.write("G1 X0 Y0 F500 ; Disable motors\n")

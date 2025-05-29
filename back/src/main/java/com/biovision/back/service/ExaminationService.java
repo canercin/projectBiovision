@@ -13,5 +13,5 @@ public interface ExaminationService {
     ExaminationDTO save(ExaminationRequest examinationRequest) throws IOException;
     ExaminationDTO update(UUID id, ExaminationDTO examinationDTO);
     void delete(UUID id);
-    ExaminationDTO findExaminationByPatientId(UUID patientId);
+    List<ExaminationDTO> findExaminationByPatientId();
 }

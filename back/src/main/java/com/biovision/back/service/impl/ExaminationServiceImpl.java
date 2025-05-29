@@ -99,9 +99,10 @@ public class ExaminationServiceImpl implements ExaminationService {
     }
 
     @Override
-    public ExaminationDTO findExaminationByPatientId(UUID patientId) {
+    public List<ExaminationDTO> findExaminationByPatientId() {
         Patient patient = (Patient) SecurityUtils.getCurrentUser();
-        return examinationMapper.toDTO(examinationRepository.findExaminationByPatientId(patient.getId()));
+        List<Examination> examinations = examinationRepository.findExaminationByPatientId(patient.getId());
+        return examinations.stream().map(examinationMapper::toDTO).toList();
     }
 
     private Result createResultForExamination(MultipartFile image, int type) throws IOException {

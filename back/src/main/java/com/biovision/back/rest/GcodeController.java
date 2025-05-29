@@ -26,4 +26,16 @@ public class GcodeController {
             return "Error processing G-code file: " + e.getMessage();
         }
     }
+
+    @GetMapping("/pause")
+    public String pause() {
+        gcodeService.pause();
+        return "G-code gönderme işlemi duraklatıldı.";
+    }
+
+    @GetMapping("/cancel")
+    public String cancel() {
+        gcodeService.cancel();
+        return "G-code gönderme işlemi iptal edildi.";
+    }
 }

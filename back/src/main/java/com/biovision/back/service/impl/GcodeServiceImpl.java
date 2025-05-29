@@ -10,6 +10,9 @@ import java.util.List;
 
 @Service
 public class GcodeServiceImpl implements GcodeService {
+    private volatile boolean paused = false;
+    private volatile boolean cancelled = false;
+
     /**
      * Sadece dosya path'i ile G-code dosyasını Arduino'ya gönderir.
      * Tüm işlemleri (port bulma, açma, gönderme, kapama) otomatik yapar.
@@ -33,8 +36,28 @@ public class GcodeServiceImpl implements GcodeService {
             outputStream = serialPort.getOutputStream();
             inputReader = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
 
+            // GRBL açılış mesajlarını temizle
+            try {
+                Thread.sleep(2000); // 2 saniye bekle
+            } catch (InterruptedException ignored) {}
+            while (inputReader.ready()) {
+                inputReader.readLine();
+            }
+
             List<String> gcodeLines = readGCodeFile(filePath);
+            cancelled = false;
+            paused = false;
             for (String command : gcodeLines) {
+                // İptal kontrolü
+                if (cancelled) {
+                    break;
+                }
+                // Duraklatma kontrolü
+                while (paused) {
+                    try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+                    if (cancelled) break;
+                }
+                if (cancelled) break;
                 sendCommand(command.trim(), outputStream);
                 waitForOK(inputReader);
             }
@@ -77,11 +100,27 @@ public class GcodeServiceImpl implements GcodeService {
     }
 
     private void waitForOK(BufferedReader inputReader) throws IOException {
+        long start = System.currentTimeMillis();
         String line;
-        while ((line = inputReader.readLine()) != null) {
-            if (line.trim().equalsIgnoreCase("ok")) {
-                break;
+        while ((System.currentTimeMillis() - start) < 10000) { // 10 saniye timeout
+            if (inputReader.ready() && (line = inputReader.readLine()) != null) {
+                if (line.trim().equalsIgnoreCase("ok")) {
+                    return;
+                }
             }
+            try { Thread.sleep(10); } catch (InterruptedException ignored) {}
         }
+        throw new IOException("GRBL'den ok cevabı alınamadı (timeout)!");
+    }
+
+    @Override
+    public void pause() {
+        this.paused = true;
+    }
+
+    @Override
+    public void cancel() {
+        this.cancelled = true;
+        this.paused = false; // iptal edilirse duraklatma da kalksın
     }
 }

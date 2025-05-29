@@ -2,6 +2,7 @@ package com.biovision.back.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,7 +16,7 @@ public class Examination {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @CreatedDate
+    @CreationTimestamp
     private Instant date;
 
     @ManyToOne
