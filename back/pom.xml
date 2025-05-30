@@ -125,6 +125,11 @@
 			<artifactId>jSerialComm</artifactId>
 			<version>2.10.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.willwinder.universalgcodesender</groupId>
+			<artifactId>ugs-core</artifactId>
+			<version>2.1.14</version>
+		</dependency>
 	</dependencies>
 
 	<build>

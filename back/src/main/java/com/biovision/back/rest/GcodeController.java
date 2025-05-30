@@ -29,13 +29,31 @@ public class GcodeController {
 
     @GetMapping("/pause")
     public String pause() {
-        gcodeService.pause();
-        return "G-code gönderme işlemi duraklatıldı.";
+        try {
+            gcodeService.pause();
+            return "G-code paused successfully.";
+        } catch (Exception e) {
+            return "Error pausing G-code: " + e.getMessage();
+        }
     }
 
     @GetMapping("/cancel")
     public String cancel() {
-        gcodeService.cancel();
-        return "G-code gönderme işlemi iptal edildi.";
+        try {
+            gcodeService.cancel();
+            return "G-code cancelled successfully.";
+        } catch (Exception e) {
+            return "Error cancelling G-code: " + e.getMessage();
+        }
+    }
+
+    @GetMapping("/resume")
+    public String resume() {
+        try {
+            gcodeService.resume();
+            return "G-code resumed successfully.";
+        } catch (IOException e) {
+            return "Error resuming G-code: " + e.getMessage();
+        }
     }
 }

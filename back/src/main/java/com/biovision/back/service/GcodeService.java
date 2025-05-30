@@ -4,6 +4,7 @@ import java.io.IOException;
 
 public interface GcodeService {
     void processGCodeFile(String filePath) throws IOException;
-    void pause();
-    void cancel();
+    void pause() throws IOException;
+    void cancel() throws IOException;
+    void resume() throws IOException;
 }
