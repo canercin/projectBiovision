@@ -1,0 +1,153 @@
+<!-- Background Image -->
+<img src="./assets/7.jpeg" class="page" alt="">
+
+
+
+
+<!-- Toggle Button - her zaman görünür -->
+<button class="global-toggle-btn" (click)="toggleSidebar()">
+  <i class="fas fa-bars"></i>
+</button>
+
+<!-- Sidebar -->
+<div class="sidebar-container">
+  <div class="sidebar" [class.active]="isSidebarOpen">
+    <div class="sidebar-header">
+      <h3>Menü</h3>
+    </div>
+    <div class="sidebar-content">
+      <ul> 
+        <li>
+          <a [routerLink]="['/user']" routerLinkActive="router-link-active" class="user">
+            <i class="fas fa-file-medical"></i>
+            Muayene
+          </a>
+        </li>
+        <li>
+          <a [routerLink]="['/patients']" routerLinkActive="router-link-active" class="results">
+            <i class="fas fa-file-medical"></i>
+            Hastalar
+          </a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <a (click)="logout()" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          Çıkış Yap
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Fotoğraf Yükleme Bölümü -->
+  <div class="upload-box">
+    <!-- Seçilen Resim -->
+    <img *ngIf="selectedImageUrl" [src]="selectedImageUrl" alt="Seçilen Resim" class="selected-image">
+    
+    <!-- Fotoğraf Yükle Butonu -->
+    <button *ngIf="!selectedImageUrl" (click)="fileInput.click()">Select File</button>
+
+    <!-- Dosya Seçme Input -->
+    <input 
+      #fileInput 
+      type="file" 
+      style="display: none;" 
+      (change)="onFileSelected($event)" 
+      title="Choose an image file" 
+      placeholder="No file selected" />
+
+  
+<!-- Yükleme Butonu -->
+<!-- 
+<button (click)="onUpload()" [disabled]="!selectedFile">Upload</button>
+-->
+
+
+<!-- Durum Mesajı -->
+<!-- <p>{{ status }}</p> -->
+
+  </div>
+  
+
+  <!-- Kamera Bölümü -->
+  <div class="camera-box">
+    <!-- Kamera izni verilmediyse buton görünsün 
+    <button *ngIf="btnVisible" (click)="checkPermission()">Check the webcam</button>-->
+    <br>
+    <button [routerLink]="['/user3']" routerLinkActive="router-link-active" class="results">
+      <i class="fas fa-file-medical"></i>
+      Canlı İzleme
+    </button>
+    <!-- Kamera izni verildiyse webcam görüntüsü ve fotoğraf çekme butonu görünsün -->
+    <div *ngIf="cameraVisible">
+      <webcam #webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)" [width]="400" [height]="230"></webcam>
+      <button class="captureImage" (click)="captureImage()">{{btnLabel}}</button>
+    </div>
+  </div>
+
+  <!-- Hasta Listesi Bölümü -->
+  <div class="patient-box">
+    <div class="search-container">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="filterPatients()"
+        placeholder="Hasta ara..."
+        class="search-input"
+      >
+    </div>
+    <div class="patient-list">
+      <div *ngFor="let patient of filteredPatients" class="patient-item" (click)="onPatientSelect(patient.id)" [class.selected]="selectedPatientId === patient.id">
+        <div class="patient-info">
+          <span class="patient-name">{{patient.firstName}} {{patient.lastName}}</span>
+          <!-- <span class="patient-details">ID: {{patient.id}}</span> -->
+        </div>
+      </div>
+      <div *ngIf="filteredPatients.length === 0" class="no-results">
+        Hasta bulunamadı
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Radio Butonlar -->
+<div class="radio-container">
+  <div class="radio-group">
+    <ng-container *ngFor="let diagnosis of diagnoses">
+      <input 
+        type="radio" 
+        [id]="'diagnosis' + diagnosis.id" 
+        name="diagnosisOptions" 
+        [value]="diagnosis.id"
+        (change)="onDiagnosisChange($event)"
+      >
+      <label [for]="'diagnosis' + diagnosis.id">{{diagnosis.name}}</label>
+    </ng-container>
+    <div *ngIf="diagnoses.length === 0" class="no-diagnoses">
+      Tanı seçenekleri yükleniyor...
+    </div>
+  </div>
+</div>
+
+<!-- Tara Butonu -->
+<div class="scan-button-container">
+  <button (click)="onUpload()" [disabled]="!selectedFile" class="scan-button">Tara</button>
+</div>
+<div class="scan-button-container">
+  <button (click)="yeniMuayene()" class="scan-button">Yeni Muayene</button>
+</div>
+
+<!-- Görüntü Önizleme ve İndirme Bölümü -->
+<div class="button-container" *ngIf="previewImage">
+  <button (click)="uploadCapturedImage()">Download Image</button>
+</div>
+
+<!-- Kamera durumu mesajı -->
+ <!--
+<div *ngIf="status">
+  <p>{{ status }}</p>
+</div> 
+-->
+

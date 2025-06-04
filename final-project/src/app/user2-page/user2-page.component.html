@@ -1,0 +1,30 @@
+<div class="user2-container">
+  <div class="image-container">
+    <div class="image-box">
+      <h3>Orijinal Görüntü</h3>
+      <img [src]="'http://localhost:8081/original/' + originalImagePath" alt="Orijinal Görüntü" class="result-image">
+    </div>
+
+    <div class="image-box" *ngIf="cancerType === 'Cilt Kanseri'">
+      <h3>Segmentasyon Sonucu</h3>
+      <img [src]="'http://localhost:8081/masked/' + resultImagePath" alt="Segmentasyon Sonucu" class="result-image">
+    </div>
+  </div>
+
+  <div class="result-status">
+    <div class="status-content">
+      <span class="status-label">Test Sonucu:</span>
+      <div class="status-value positive">
+        <i class="fas fa-check-circle"></i>
+        <span>Pozitif</span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="bottom-center-button">
+    <button (click)="muayeneSayfasinaDon()">Muayene Sayfasına Dön</button>
+    <button (click)="islemGoruntule()" class="view-process-btn">İşlemi Görüntüle</button>
+    <button (click)="gcodeSayfasinaGec()" class="gcode-btn">Gcode Sayfasına Geç</button>
+  </div>
+</div>

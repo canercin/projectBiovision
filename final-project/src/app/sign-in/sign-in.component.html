@@ -1,0 +1,56 @@
+<div class="signin-page">
+    <div class="background-shapes">
+        <div class="dna-helix">
+            <div class="dna-strand"></div>
+            <div class="dna-strand"></div>
+            <div class="dna-strand"></div>
+            <div class="dna-strand"></div>
+        </div>
+        <div class="molecule molecule-1"></div>
+        <div class="molecule molecule-2"></div>
+        <div class="molecule molecule-3"></div>
+    </div>
+    
+    <div class="signin-box">
+        <div class="signin-header">
+            <h1>Kapsül-BioVision</h1>
+            <p>Giriş Yap</p>
+        </div>
+        
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="signin-form">
+            <div class="input-group">
+                <input 
+                    type="text"
+                    formControlName="username"
+                    placeholder="Kullanıcı Adı"
+                    required
+                >
+                <div class="error-message" *ngIf="loginForm.get('username')?.errors?.['required'] && loginForm.get('username')?.touched">
+                    Kullanıcı adı gereklidir
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <input 
+                    type="password"
+                    formControlName="password"
+                    placeholder="Şifre"
+                    required
+                >
+                <div class="error-message" *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+                    Şifre gereklidir
+                </div>
+            </div>
+
+            <button type="submit" [disabled]="!loginForm.valid">Giriş Yap</button>
+            
+            <div *ngIf="error" class="error-message">
+                {{ error }}
+            </div>
+            
+            <div class="register-link">
+                Hesabınız yok mu? <a routerLink="/sign-up">Üye Ol</a>
+            </div>
+        </form>
+    </div>
+</div>
